@@ -1,0 +1,32 @@
+name: Tests
+on: [push, pull_request]
+jobs:
+  tests:
+    name: PHP ${{ matrix.php-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        php-version:
+          - "8.1"
+
+    env:
+      php-extensions: xdebug, yaml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.php-extensions }}
+
+      - uses: "ramsey/composer-install@v2"
+
+      - name: Running static analyse
+        run: php vendor/bin/phpstan analyse src/ tests/ --level max
+
+      - name: Running tests
+        run: php vendor/bin/phpunit --coverage-text

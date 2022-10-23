@@ -55,35 +55,12 @@ final class Analyzer
         $this->startNewLayer($this->containers[array_key_first($this->containers)]);
     }
 
-    public function getWasteVolume(): int
-    {
-        return $this->getContainersVolume() - $this->getPackedVolume();
-    }
-
-    public function getWastePercentage(): int
-    {
-        $containersVolume = $this->getContainersVolume();
-        $packedVolume = $this->getPackedVolume();
-
-        return $containersVolume > 0 && $packedVolume > 0 ? (int) ((($containersVolume - $packedVolume) / $containersVolume) * 100) : 0;
-    }
-
     /**
      * @return array<string, Container>
      */
     public function getContainers(): array
     {
         return $this->containers;
-    }
-
-    public function getContainersVolume(): int
-    {
-        $volume = 0;
-        foreach ($this->containers as $container) {
-            $volume += $container->getVolume();
-        }
-
-        return $volume;
     }
 
     public function countPackedPackages(): int

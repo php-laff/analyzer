@@ -57,9 +57,6 @@ final class AnalyzerTest extends TestCase
 
         $this->assertCount(0, $analyzer->getRemainingBoxes());
 
-        $this->assertSame(33, $analyzer->getWastePercentage());
-        $this->assertSame(13552, $analyzer->getWasteVolume());
-
         $layerOne = $container->getLayerDimensions(1);
         $this->assertSame(['length' => 50, 'width' => 50, 'height' => 8], $layerOne->toArray());
 
@@ -87,9 +84,6 @@ final class AnalyzerTest extends TestCase
         $this->assertFalse($container->full);
 
         $this->assertSame(5, $analyzer->countPackedPackages());
-
-        $this->assertSame(15, $analyzer->getWastePercentage());
-        $this->assertSame(4752, $analyzer->getWasteVolume());
     }
 
     public function testPackingPackagesWithDifferentHeight(): void
@@ -123,9 +117,6 @@ final class AnalyzerTest extends TestCase
         foreach ($container->packages as $layer => $packages) {
             $this->assertCount($layers[$layer], $packages);
         }
-
-        $this->assertSame(49, $analyzer->getWastePercentage());
-        $this->assertSame(6470, $analyzer->getWasteVolume());
     }
 
     public function testPackingWithPredefinedContainerLeavesSomePackage(): void
@@ -150,10 +141,6 @@ final class AnalyzerTest extends TestCase
         $this->assertSame(1, $analyzer->countPackedPackages());
         $this->assertCount(4, $analyzer->getRemainingBoxes());
         $this->assertSame(6448, $analyzer->getRemainingVolume());
-
-        // Waste is zero cause only one package fit into the container
-        $this->assertSame(0, $analyzer->getWastePercentage());
-        $this->assertSame(0, $analyzer->getWasteVolume());
     }
 
     public function testPackingWithPredefinedContainers(): void
@@ -180,9 +167,6 @@ final class AnalyzerTest extends TestCase
 
         $this->assertSame(5, $analyzer->countPackedPackages());
         $this->assertCount(0, $analyzer->getRemainingBoxes());
-
-        $this->assertSame(33, $analyzer->getWastePercentage());
-        $this->assertSame(13552, $analyzer->getWasteVolume());
 
         $this->assertSame(0, $container1->getWastePercentage());
         $this->assertSame(0, $container1->getWasteVolume());
